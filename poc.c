@@ -20,7 +20,7 @@
 
 
 
-#define LOGSTEP(fmt, ...)    printf("[*] " fmt "\n", ##__VA_ARGS__)
+
 #define LOGSUCCESS(fmt, ...) printf("[+] " fmt "\n", ##__VA_ARGS__)
 #define LOGFAIL(fmt, ...)    printf("[-] " fmt "\n", ##__VA_ARGS__)
 #ifndef MAX
