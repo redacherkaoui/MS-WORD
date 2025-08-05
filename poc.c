@@ -202,7 +202,7 @@ int main(void) {
 
 
    
-    LOGSTEP("Step 1: Loading TextShaping.dll via LoadLibraryA");
+   
     HMODULE hTextShaping = LoadLibraryA("TextShaping.dll");
     if (!hTextShaping) {
         LOGFAIL("Failed to load TextShaping.dll (error %lu)", GetLastError());
