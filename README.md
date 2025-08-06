@@ -13,7 +13,7 @@ The core of the bug in **TextShaping.dll** can be seen in three small snippets:
    const size_t dirSize    = 12 + 2*16;
    const size_t gsubOffset = 0x50;
    const size_t gsubSize   = 0x30;
-   // only allocates MAX(dirSize, gsubOffset) + gsubSize = 0x50 + 0x30 = 0x80 bytes
+  
    size_t totalSize        = MAX(dirSize, gsubOffset) + gsubSize;
    uint8_t *buf = malloc(totalSize);
    ```
